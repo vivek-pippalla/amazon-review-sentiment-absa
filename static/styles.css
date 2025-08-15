@@ -1,0 +1,218 @@
+/* Custom CSS for Sentiment Analysis Application */
+
+:root {
+  --primary-color: #4a6fa5;
+  --primary-hover: #3a5a8c;
+  --positive-color: #28a745;
+  --negative-color: #dc3545;
+  --neutral-color: #6c757d;
+  --light-bg: #f8f9fa;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.3s;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1000px;
+}
+
+/* Header styling */
+.app-header {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.app-title {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Card styling */
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 1.5rem;
+  transition: transform var(--transition-speed);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px 10px 0 0 !important;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Input area styling */
+.review-input-card {
+  background-color: white;
+}
+
+#reviewText {
+  resize: vertical;
+  min-height: 120px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 1rem;
+  transition: border-color var(--transition-speed);
+}
+
+#reviewText:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(74, 111, 165, 0.25);
+}
+
+.btn-analyze {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  border-radius: 6px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  transition: all var(--transition-speed);
+}
+
+.btn-analyze:hover, .btn-analyze:focus {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loader styling */
+.loader {
+  border: 4px solid rgba(74, 111, 165, 0.1);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Results styling */
+.results-container {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sentiment display */
+.sentiment-badge {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.sentiment-positive {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: var(--positive-color);
+}
+
+.sentiment-negative {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: var(--negative-color);
+}
+
+/* Summary card */
+.summary-text {
+  line-height: 1.7;
+  color: #444;
+}
+
+/* Aspect sentiments */
+.aspects-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.aspect-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  transition: background-color var(--transition-speed);
+}
+
+.aspect-item:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.aspect-name {
+  font-weight: 500;
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aspect-sentiment {
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  text-transform: capitalize;
+}
+
+.aspect-positive {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: var(--positive-color);
+}
+
+.aspect-negative {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: var(--negative-color);
+}
+
+.aspect-neutral {
+  background-color: rgba(108, 117, 125, 0.15);
+  color: var(--neutral-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .app-header {
+      padding: 1rem 0;
+  }
+  
+  .card {
+      margin-bottom: 1rem;
+  }
+  
+  .card-body {
+      padding: 1rem;
+  }
+  
+  .sentiment-badge {
+      font-size: 1rem;
+      padding: 0.4rem 1rem;
+  }
+}

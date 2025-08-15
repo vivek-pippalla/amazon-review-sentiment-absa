@@ -1,0 +1,88 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background and Styling -->
+  <defs>
+    <linearGradient id="dataflow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e0f7fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b2ebf2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="preprocessing" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e8f5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="models" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e1bee7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="output" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffe0b2;stop-opacity:1" />
+    </linearGradient>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#546e7a" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle">NLP Pipeline Architecture</text>
+  
+  <!-- Input Data Section - Now Centered -->
+  <rect x="375" y="80" width="150" height="80" rx="10" ry="10" fill="url(#dataflow)" stroke="#0277bd" stroke-width="2" />
+  <text x="450" y="115" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle">Raw Text Input</text>
+  <text x="450" y="140" font-family="Arial" font-size="12" text-anchor="middle">User reviews, documents</text>
+  
+  <!-- Preprocessing Section -->
+  <rect x="150" y="220" width="600" height="120" rx="10" ry="10" fill="url(#preprocessing)" stroke="#2e7d32" stroke-width="2" />
+  <text x="450" y="245" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">Preprocessing Layer</text>
+  
+  <!-- Preprocessing Components -->
+  <rect x="190" y="270" width="120" height="40" rx="5" ry="5" fill="white" stroke="#2e7d32" stroke-width="1.5" />
+  <text x="250" y="295" font-family="Arial" font-size="14" text-anchor="middle">Tokenization</text>
+  
+  <rect x="340" y="270" width="120" height="40" rx="5" ry="5" fill="white" stroke="#2e7d32" stroke-width="1.5" />
+  <text x="400" y="295" font-family="Arial" font-size="14" text-anchor="middle">Normalization</text>
+  
+  <rect x="490" y="270" width="220" height="40" rx="5" ry="5" fill="white" stroke="#2e7d32" stroke-width="1.5" />
+  <text x="600" y="295" font-family="Arial" font-size="14" text-anchor="middle">Word Embedding</text>
+  
+  <!-- Models Section -->
+  <rect x="50" y="400" width="800" height="150" rx="10" ry="10" fill="url(#models)" stroke="#7b1fa2" stroke-width="2" />
+  <text x="450" y="425" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">Deep Learning Models</text>
+  
+  <!-- Individual Models -->
+  <rect x="80" y="450" width="220" height="70" rx="5" ry="5" fill="white" stroke="#7b1fa2" stroke-width="1.5" />
+  <text x="190" y="480" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Sentiment Analysis</text>
+  <text x="190" y="500" font-family="Arial" font-size="12" text-anchor="middle">BiLSTM</text>
+  
+  <rect x="340" y="450" width="220" height="70" rx="5" ry="5" fill="white" stroke="#7b1fa2" stroke-width="1.5" />
+  <text x="450" y="480" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Text Summarization</text>
+  <text x="450" y="500" font-family="Arial" font-size="12" text-anchor="middle">T5 Transformer</text>
+  
+  <rect x="600" y="450" width="220" height="70" rx="5" ry="5" fill="white" stroke="#7b1fa2" stroke-width="1.5" />
+  <text x="710" y="480" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">ABSA</text>
+  <text x="710" y="500" font-family="Arial" font-size="12" text-anchor="middle">Aspect-Based Sentiment Analysis</text>
+  
+  <!-- Connection Lines -->
+  <!-- Input to Preprocessing - Now from center -->
+  <line x1="450" y1="160" x2="450" y2="220" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Preprocessing Components Connections -->
+  <line x1="310" y1="290" x2="340" y2="290" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="460" y1="290" x2="490" y2="290" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Preprocessing to Models -->
+  <line x1="190" y1="310" x2="190" y2="450" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="450" y1="340" x2="450" y2="450" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="710" y1="310" x2="710" y2="450" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Text Processed Output -->
+  <rect x="340" y="560" width="220" height="60" rx="10" ry="10" fill="url(#output)" stroke="#e65100" stroke-width="2" />
+  <text x="450" y="585" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle">Processed Outputs</text>
+  <text x="450" y="605" font-family="Arial" font-size="12" text-anchor="middle">Sentiments, Summaries, Aspect Analysis</text>
+  
+  <!-- Output Connections -->
+  <line x1="190" y1="520" x2="190" y2="590" stroke="#546e7a" stroke-width="2" />
+  <line x1="450" y1="520" x2="450" y2="560" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="710" y1="520" x2="710" y2="590" stroke="#546e7a" stroke-width="2" />
+  <line x1="190" y1="590" x2="340" y2="590" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="710" y1="590" x2="560" y2="590" stroke="#546e7a" stroke-width="2" marker-end="url(#arrowhead)" />
+</svg>

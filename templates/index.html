@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container my-5">
+        <header class="app-header">
+            <h1 class="app-title">Amazon Reviews Sentiment Analysis Dashboard</h1>
+        </header>
+
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card review-input-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-edit me-2"></i>Enter Your Review
+                    </div>
+                    <div class="card-body">
+                        <textarea id="reviewText" class="form-control mb-3" rows="5" placeholder="Type or paste your product review here..."></textarea>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button id="analyzeBtn" class="btn btn-primary btn-analyze">
+                                <i class="fas fa-search me-2"></i>Analyze Review
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="loader" class="loader"></div>
+                
+                <div id="resultsContainer" class="results-container">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-pie me-2"></i>Overall Sentiment
+                        </div>
+                        <div class="card-body text-center">
+                            <div id="sentimentBadge" class="sentiment-badge"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card summary-card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-file-alt me-2"></i>Summary
+                        </div>
+                        <div class="card-body">
+                            <p id="summaryText" class="summary-text"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-tags me-2"></i>Aspect-Based Analysis
+                        </div>
+                        <div class="card-body">
+                            <ul id="aspectsList" class="list-group aspects-list"></ul>
+                            <div id="noAspectsMessage" class="text-center py-3 text-muted">
+                                <i class="fas fa-info-circle me-2"></i>No specific aspects detected
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const reviewText = document.getElementById('reviewText');
+            const loader = document.getElementById('loader');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const sentimentBadge = document.getElementById('sentimentBadge');
+            const summaryText = document.getElementById('summaryText');
+            const aspectsList = document.getElementById('aspectsList');
+            const noAspectsMessage = document.getElementById('noAspectsMessage');
+            
+            analyzeBtn.addEventListener('click', async function() {
+                const review = reviewText.value.trim();
+                
+                if (!review) {
+                    alert('Please enter a review to analyze');
+                    return;
+                }
+                
+                // Show loader, hide results
+                loader.style.display = 'block';
+                resultsContainer.style.display = 'none';
+                
+                try {
+                    const response = await fetch('/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ review }),
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Server error');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Update UI with results
+                    const sentiment = data['Overall Sentiment'];
+                    
+                    // Update sentiment badge
+                    sentimentBadge.textContent = sentiment;
+                    sentimentBadge.className = 'sentiment-badge ' + 
+                        (sentiment === 'Positive' ? 'sentiment-positive' : 'sentiment-negative');
+                    
+                    // Update summary
+                    summaryText.textContent = data['Summary'] || 'No summary available';
+                    
+                    // Update aspects
+                    aspectsList.innerHTML = '';
+                    const aspects = data['Aspect-based Sentiments'];
+                    
+                    if (Object.keys(aspects).length === 0) {
+                        aspectsList.style.display = 'none';
+                        noAspectsMessage.style.display = 'block';
+                    } else {
+                        aspectsList.style.display = 'block';
+                        noAspectsMessage.style.display = 'none';
+                        
+                        // Process and display aspects
+                        const sortedAspects = Object.entries(aspects).sort((a, b) => {
+                            if (a[1] === b[1]) return a[0].localeCompare(b[0]);
+                            return a[1] === 'Positive' ? -1 : 1;
+                        });
+                        
+                        sortedAspects.forEach(([aspect, sentiment]) => {
+                            // Clean aspect names
+                            const cleanedAspect = aspect
+                                .replace(/\s+/g, ' ')
+                                .replace(/(\w)([A-Z])/g, '$1 $2')
+                                .trim()
+                                .toLowerCase()
+                                .split(' ')
+                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                .join(' ');
+
+                            // Validate sentiment
+                            const validSentiments = ['positive', 'negative'];
+                            const cleanSentiment = validSentiments.includes(sentiment.toLowerCase()) 
+                                ? sentiment 
+                                : 'neutral';
+
+                            // Create list item
+                            const li = document.createElement('li');
+                            li.className = 'list-group-item aspect-item';
+                            
+                            const aspectSpan = document.createElement('span');
+                            aspectSpan.className = 'aspect-name';
+                            aspectSpan.textContent = cleanedAspect;
+                            
+                            const sentimentSpan = document.createElement('span');
+                            sentimentSpan.className = 'aspect-sentiment ' + 
+                                (cleanSentiment.toLowerCase() === 'positive' 
+                                    ? 'aspect-positive' 
+                                    : cleanSentiment.toLowerCase() === 'negative'
+                                        ? 'aspect-negative'
+                                        : 'aspect-neutral');
+                            sentimentSpan.textContent = cleanSentiment;
+                            
+                            li.appendChild(aspectSpan);
+                            li.appendChild(sentimentSpan);
+                            aspectsList.appendChild(li);
+                        });
+                    }
+                    
+                    // Hide loader, show results
+                    loader.style.display = 'none';
+                    resultsContainer.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    loader.style.display = 'none';
+                    alert('An error occurred during analysis. Please try again.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

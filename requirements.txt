@@ -1,0 +1,22 @@
+flask
+tensorflow
+scikit-learn
+transformers
+spacy
+rapidfuzz
+ollama
+torch
+pymysql
+python-dotenv
+sentencepiece
+protobuf
+
+# commented libraries are not needed in docker. You can install them if you pull this from git
+#numpy
+#pandas
+#matplotlib
+#seaborn
+#nltk
+# Ensure spaCy English model is available
+# You can install it with:
+# python -m spacy download en_core_web_sm
